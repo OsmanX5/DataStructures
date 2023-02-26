@@ -11,26 +11,34 @@ namespace DataStructures.DataStructures
     {
         private int[] minHeap;
         private int Capacity;
-        private int realSize;
+        private int lastIndex;
 
         public MinHeap(int size)
         {
-            Capacity = size;
+            Capacity = size+1;
+            lastIndex = 0;
             minHeap = new int[size + 1];
-            minHeap[0] = size;
+        }
+
+        public int[] Items()
+        {
+            if(lastIndex>0)
+				return minHeap[1..(lastIndex+1)];
+            return null;
         }
 
         public void Add(int value)
         {
-            realSize++;
-            if (realSize == Capacity)
+            lastIndex++;
+
+            if (lastIndex >= Capacity)
             {
-                realSize--;
+                lastIndex--;
                 Console.WriteLine("over flow");
                 return;
             }
-            minHeap[realSize] = value;
-            int index = realSize;
+            minHeap[lastIndex] = value;
+            int index = lastIndex;
             int parentIndex = index / 2;
             while (minHeap[index] < minHeap[parentIndex] && index > 1)
             {
@@ -38,6 +46,7 @@ namespace DataStructures.DataStructures
                 index = parentIndex;
                 parentIndex = index / 2;
             }
+            Console.WriteLine("added" + value);
         }
 
         public void AddRange(IEnumerable arr)
@@ -51,46 +60,58 @@ namespace DataStructures.DataStructures
 
         public int Pop()
         {
-            if (realSize < 1) return int.MinValue;
+            if (lastIndex < 1) return int.MinValue;
             int toPop = minHeap[1];
-            minHeap[1] = minHeap[realSize];
-            realSize--;
+            minHeap[1] = minHeap[lastIndex];
+            lastIndex--;
             int index = 1;
-            while (index < realSize / 2)
+            while (index <= lastIndex / 2)
             {
                 int leftIndex = index * 2;
                 int rightIndex = index * 2 + 1;
-                if (minHeap[leftIndex] < minHeap[index] &&
-                    minHeap[leftIndex] < minHeap[rightIndex])
+                if (minHeap[index] > minHeap[leftIndex] || minHeap[index] > minHeap[rightIndex])
                 {
-                    (minHeap[leftIndex], minHeap[index]) = (minHeap[index], minHeap[leftIndex]);
-                    index = leftIndex;
-                }
-                else if (minHeap[rightIndex] < minHeap[index] &&
-                         minHeap[rightIndex] < minHeap[leftIndex])
-                {
-                    (minHeap[rightIndex], minHeap[index]) = (minHeap[index], minHeap[rightIndex]);
-                    index = rightIndex;
-                }
+	                if (minHeap[leftIndex] < minHeap[rightIndex])
+	                {
+		                (minHeap[leftIndex], minHeap[index]) = (minHeap[index], minHeap[leftIndex]);
+		                index = leftIndex;
+	                }
+	                else
+	                {
+		                (minHeap[rightIndex], minHeap[index]) = (minHeap[index], minHeap[rightIndex]);
+		                index = rightIndex;
+					}
+				}
                 else { break; }
             }
 
-            return toPop;
+
+			return toPop;
         }
 
-        public int Size() => realSize;
+        public int Size() => lastIndex;
 
         public override string ToString()
         {
             string s = "\n [ ";
-            foreach (int val in minHeap)
+            for (int i = 1; i <= lastIndex; i++)
             {
-                s += $" {val} ";
+	            s += $" {minHeap[i]} ";
             }
 
             s += "] \n";
             return s;
         }
+        
 
+        public void Operate(Func<int,int> opFunc)
+        {
+	        for (int i = 1; i <= lastIndex; i++)
+	        {
+		        minHeap[i] = opFunc(minHeap[i]);
+	        }
+        }
+
+        
     }
 }
