@@ -1,8 +1,8 @@
 ﻿using System;
 class Program
 {
-	public static Main()
+	static void Main()
 	{
-		Console.WriteLine("fsd");
+		new DataStructuresTest.HeapTest();
 	}
 }
