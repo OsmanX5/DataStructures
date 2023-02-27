@@ -9,15 +9,15 @@ namespace DataStructures.DataStructures
 {
     public class MinHeap
     {
-        private int[] minHeap;
-        private int Capacity;
-        private int lastIndex;
+	    public int[] minHeap;
+	    public int Capacity;
+	    public int lastIndex;
 
         public MinHeap(int size)
         {
             Capacity = size+1;
             lastIndex = 0;
-            minHeap = new int[size + 1];
+            minHeap = new int[Capacity];
         }
 
         public int[] Items()
@@ -46,7 +46,7 @@ namespace DataStructures.DataStructures
                 index = parentIndex;
                 parentIndex = index / 2;
             }
-            Console.WriteLine("added" + value);
+            
         }
 
         public void AddRange(IEnumerable arr)

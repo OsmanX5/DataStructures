@@ -12,19 +12,23 @@ namespace DataStructuresTest
 	{
 		static HeapTest()
 		{
-			int[] nums = { 1};
+			int[] nums = { 10,4,2,10};
 			int n = nums.Length;
-			MinHeap heap = new MinHeap(n);
+			MaxHeap heap = new MaxHeap(n);
 			heap.AddRange(nums);
-			int res = 0;
-			while (heap.Items().Max() != 0)
+			Console.WriteLine(heap.ToString());
+			while (heap.lastIndex >1)
 			{
-				int min = heap.Pop();
-				while (min == 0)min = heap.Pop();
-				heap.Operate(x => x > 0 ? x - min : 0);
+				int x1 = heap.Pop();
 				Console.WriteLine(heap.ToString());
-				res++;
+				int x2 = heap.Pop();
+				Console.WriteLine(x1);
+				Console.WriteLine(x2);
+				if(x1!=x2)heap.Add(Math.Abs(x1-x2));
+				Console.WriteLine(heap.ToString());
 			}
+
+			Console.WriteLine(heap.Peek());
 		}
 	}
 }

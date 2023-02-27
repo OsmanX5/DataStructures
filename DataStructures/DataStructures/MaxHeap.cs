@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,28 +9,34 @@ namespace DataStructures
 {
     class MaxHeap
     {
-        private int[] maxHeap;
-        private int heapSize;
-        private int realSize;
+        public int[] maxHeap;
+        public int Capasity;
+        public int lastIndex;
 
         public MaxHeap(int size)
         {
-            heapSize = size;
-            maxHeap = new int[size + 1];
-            maxHeap[0] = size;
-        }
+            Capasity = size+1;
+            maxHeap = new int[Capasity];
+            lastIndex = 0;
 
-        public void Add(int value)
+        }
+        public int[] Items()
         {
-            realSize++;
-            if (realSize == heapSize)
+	        if (lastIndex > 0)
+		        return maxHeap[1..(lastIndex + 1)];
+	        return null;
+        }
+		public void Add(int value)
+        {
+            lastIndex++;
+            if (lastIndex >= Capasity)
             {
-                realSize--;
+                lastIndex--;
                 Console.WriteLine("over flow");
                 return;
             }
-            maxHeap[realSize] = value;
-            int index = realSize;
+            maxHeap[lastIndex] = value;
+            int index = lastIndex;
             int parentIndex = index / 2;
             while (maxHeap[index] > maxHeap[parentIndex] && index > 1)
             {
@@ -38,51 +45,59 @@ namespace DataStructures
                 parentIndex = index / 2;
             }
         }
-
-        public int Peek() => maxHeap[1];
+		public void AddRange(IEnumerable arr)
+		{
+			foreach (int x in arr)
+			{
+				Add(x);
+			}
+		}
+		public int Peek() => lastIndex>=1 ? maxHeap[1] : 0;
 
         public int Pop()
         {
-            if (realSize < 1) return int.MinValue;
+            if (lastIndex < 1) return int.MinValue;
             int toPop = maxHeap[1];
-            maxHeap[1] = maxHeap[realSize];
-            realSize--;
+            maxHeap[1] = maxHeap[lastIndex];
+            lastIndex--;
             int index = 1;
-            while (index < realSize / 2)
+            while (index <= lastIndex / 2)
             {
                 int leftIndex = index * 2;
                 int rightIndex = index * 2 + 1;
-                if (maxHeap[leftIndex] > maxHeap[index] &&
-                    maxHeap[leftIndex] > maxHeap[rightIndex])
+                if (maxHeap[index] < maxHeap[leftIndex] || maxHeap[index] < maxHeap[rightIndex])
                 {
-                    (maxHeap[leftIndex], maxHeap[index]) = (maxHeap[index], maxHeap[leftIndex]);
-                    index = leftIndex;
-                }
-                else if (maxHeap[rightIndex] > maxHeap[index] &&
-                         maxHeap[rightIndex] > maxHeap[leftIndex])
-                {
-                    (maxHeap[rightIndex], maxHeap[index]) = (maxHeap[index], maxHeap[rightIndex]);
-                    index = rightIndex;
+	                if (maxHeap[leftIndex] > maxHeap[rightIndex])
+	                {
+		                (maxHeap[leftIndex], maxHeap[index]) = (maxHeap[index], maxHeap[leftIndex]);
+		                index = leftIndex;
+	                }
+	                else
+	                {
+		                (maxHeap[rightIndex], maxHeap[index]) = (maxHeap[index], maxHeap[rightIndex]);
+		                index = rightIndex;
+	                }
                 }
                 else { break; }
-            }
+			}
 
             return toPop;
         }
 
-        public int Size() => realSize;
+        public int Size() => lastIndex;
+
 
         public override string ToString()
         {
-            string s = "\n [ ";
-            foreach (int val in maxHeap)
-            {
-                s += $" {val} ";
-            }
+	        string s = "\n [ ";
+	        for (int i = 1; i <= lastIndex; i++)
+	        {
+		        s += $" {maxHeap[i]} ";
+	        }
 
-            s += "] \n";
-            return s;
+	        s += "] \n";
+	        return s;
         }
 
-    }
+	}
 }
