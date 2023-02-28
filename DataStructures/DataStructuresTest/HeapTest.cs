@@ -12,23 +12,35 @@ namespace DataStructuresTest
 	{
 		static HeapTest()
 		{
-			int[] nums = { 10,4,2,10};
+			int[] nums = { -3,4,3,3};
 			int n = nums.Length;
-			MaxHeap heap = new MaxHeap(n);
-			heap.AddRange(nums);
-			Console.WriteLine(heap.ToString());
-			while (heap.lastIndex >1)
+			int k = 2;
+			MaxHeap<Tuple<int,int>> heap = new MaxHeap<Tuple<int, int>>(n);
+			for (int i = 0; i < n; i++)
 			{
-				int x1 = heap.Pop();
-				Console.WriteLine(heap.ToString());
-				int x2 = heap.Pop();
-				Console.WriteLine(x1);
-				Console.WriteLine(x2);
-				if(x1!=x2)heap.Add(Math.Abs(x1-x2));
-				Console.WriteLine(heap.ToString());
+				heap.Add(new Tuple<int, int>(nums[i], i));
 			}
 
-			Console.WriteLine(heap.Peek());
+			Tuple<int, int>[] res = new Tuple<int, int>[k];
+			int lastIndex = -1;
+			int resI = 0;
+			while (heap.Count() > 0)
+			{
+				if (resI >= k) break;
+				var x = heap.Pop();
+				int index = x.Item2;
+				int val = x.Item1;
+				if (index >= lastIndex)
+				{
+					res[resI] = x;
+					resI++;
+				}
+			}
+			int[] res2 = (from x in res orderby x.Item2 select x.Item1).ToArray();
+			foreach (var VARIABLE in res2)
+			{
+				Console.WriteLine(VARIABLE);
+			}
 		}
 	}
 }
