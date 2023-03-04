@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataStructures.DataStructures
+namespace DataStructures
 {
     public class MinHeap
     {
