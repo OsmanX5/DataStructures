@@ -34,7 +34,7 @@ namespace DataStructures
             return x;
         }
 
-        public void union(int x, int y)
+        public void Union(int x, int y)
         {
             int rootX = find(x);
             int rootY = find(y);
@@ -67,6 +67,17 @@ namespace DataStructures
             return find(x) == find(y);
         }
 
+        public HashSet<int> GetSet(int x)
+        {
+            return Sets[find(x)];
+        }
+        public List<HashSet<int>> GetSets()
+        {
+            List<HashSet<int>> res = new List<HashSet<int>>();
+            foreach(var pair in Sets) res.Add(pair.Value);
+            return res;
+        }
+        public int SetsCount() => Sets.Count;
         public override string ToString()
         {
             string  res = "";

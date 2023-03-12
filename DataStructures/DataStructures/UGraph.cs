@@ -35,31 +35,6 @@ namespace DataStructuresAndALghorithms.DataStructures
             adjList[a].Add(b);
             adjList[b].Add(a);
         }
-        public Dictionary<int, int> ShortestDistanceFrom(int start)
-        {
-            Dictionary<int, int> Distance = new Dictionary<int, int>();
-            Dictionary<int, bool> Visited = new Dictionary<int, bool>();
-            foreach(var node in adjList.Keys)
-            {
-                Distance.Add(node, int.MaxValue);
-                Visited.Add(node, false);
-            }
-            Queue<int> BFS = new Queue<int>();
-            BFS.Enqueue(start);
-            Distance[start] = 0;
-            while(BFS.Count > 0)
-            {
-                int a = BFS.Dequeue();
-                if (Visited[a]) continue;
-                Visited[a] = true;
-                foreach (int next in adjList[a])
-                {
-                    Distance[next] = Math.Min(Distance[a]+1, Distance[next] );
-                    BFS.Enqueue(next);
-                }
-            }
-            return Distance;
-        }
         public override string ToString()
         {
             string s = "";
